@@ -1,0 +1,59 @@
+services:
+  - type: web
+    name: lumlens-api
+    env: docker
+    plan: starter
+    region: oregon
+    buildCommand: ''
+    startCommand: ''
+    envVars:
+      - key: DJANGO_SECRET_KEY
+        sync: false
+      - key: DJANGO_DEBUG
+        value: False
+      - key: DJANGO_ALLOWED_HOSTS
+        value: api.lumlens.com,www.api.lumlens.com
+      - key: CSRF_TRUSTED_ORIGINS
+        value: https://api.lumlens.com,https://www.api.lumlens.com
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://lumlens-flutter.web.app
+      - key: JWT_SIGNING_KEY
+        sync: false
+      - key: JWT_ACCESS_MINUTES
+        value: 30
+      - key: JWT_REFRESH_DAYS
+        value: 14
+      - key: DB_NAME
+        fromService:
+          type: pserv
+          name: lumlens-db
+          property: database
+      - key: DB_USER
+        fromService:
+          type: pserv
+          name: lumlens-db
+          property: user
+      - key: DB_PASSWORD
+        fromService:
+          type: pserv
+          name: lumlens-db
+          property: password
+      - key: DB_HOST
+        fromService:
+          type: pserv
+          name: lumlens-db
+          property: host
+      - key: DB_PORT
+        fromService:
+          type: pserv
+          name: lumlens-db
+          property: port
+      - key: PORT
+        value: 8000
+    postDeployCommand: python manage.py migrate
+
+databases:
+  - name: lumlens-db
+    plan: starter
+    region: oregon
+
