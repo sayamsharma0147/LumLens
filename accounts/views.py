@@ -16,7 +16,8 @@ class SignupView(generics.CreateAPIView):
 
 
 class MeView(APIView):
-    def get(self, request):
+    @staticmethod
+    def get(request):
         return Response(UserSerializer(request.user).data)
 
 

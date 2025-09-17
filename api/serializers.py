@@ -21,7 +21,8 @@ class SignupSerializer(serializers.ModelSerializer):
         model = User
         fields = ['email', 'password', 'displayName', 'role']
 
-    def validate_password(self, value):
+    @staticmethod
+    def validate_password(value):
         validate_password(value)
         return value
 
@@ -88,7 +89,8 @@ class BookingCreateSerializer(serializers.ModelSerializer):
         model = Booking
         fields = ['photographer', 'date', 'time']
 
-    def validate_photographer(self, value):
+    @staticmethod
+    def validate_photographer(value):
         if value.role != User.Roles.PHOTOGRAPHER:
             raise serializers.ValidationError('Selected user is not a photographer')
         return value
@@ -108,7 +110,8 @@ class BookingStatusUpdateSerializer(serializers.ModelSerializer):
             'status': {'required': True}
         }
 
-    def validate_status(self, value):
+    @staticmethod
+    def validate_status(value):
         allowed = {Booking.Status.ACCEPTED, Booking.Status.REJECTED}
         if value not in allowed:
             raise serializers.ValidationError('Status must be accepted or rejected')
