@@ -49,7 +49,8 @@ def main():
     resp = client.post(
         "/api/auth/login/", {"email": customer_email, "password": "Passw0rd!"}, format="json"
     )
-    assert resp.status_code == 200, (resp.status_code, resp.content)
+    if resp.status_code != 200:
+        raise AssertionError(resp.status_code, resp.content)
     tokens = resp.json()
     print_step("login_customer", tokens)
     access = tokens["access"]
@@ -57,7 +58,8 @@ def main():
 
     # Me
     resp = client.get("/api/auth/me/")
-    assert resp.status_code == 200, (resp.status_code, resp.content)
+    if resp.status_code != 200:
+        raise AssertionError(resp.status_code, resp.content)
     print_step("me_customer", resp.json())
 
     # Login photographer and ensure profile exists
@@ -65,13 +67,15 @@ def main():
     resp = client.post(
         "/api/auth/login/", {"email": photographer_email, "password": "Passw0rd!"}, format="json"
     )
-    assert resp.status_code == 200, (resp.status_code, resp.content)
+    if resp.status_code != 200:
+        raise AssertionError(resp.status_code, resp.content)
     photographer_access = resp.json()["access"]
     client.credentials(HTTP_AUTHORIZATION=f"Bearer {photographer_access}")
 
     # GET photographer me (creates default profile if missing)
     resp = client.get("/api/photographers/me/")
-    assert resp.status_code == 200, (resp.status_code, resp.content)
+    if resp.status_code != 200:
+        raise AssertionError(resp.status_code, resp.content)
     print_step("photographer_profile_get", resp.json())
 
     # Update photographer profile
@@ -80,7 +84,8 @@ def main():
         {"bio": "Pro photographer", "profile_image": "", "availableForBooking": True},
         format="json",
     )
-    assert resp.status_code in (200, 202), (resp.status_code, resp.content)
+    if resp.status_code not in (200, 202):
+        raise AssertionError(resp.status_code, resp.content)
     print_step("photographer_profile_update", resp.json())
 
     # Customer creates booking
@@ -102,13 +107,15 @@ def main():
         },
         format="json",
     )
-    assert resp.status_code == 201, (resp.status_code, resp.content)
+    if resp.status_code != 201:
+        raise AssertionError(resp.status_code, resp.content)
     booking = resp.json()
     print_step("booking_create", booking)
 
     # Customer list bookings
     resp = client.get("/api/bookings/me/")
-    assert resp.status_code == 200
+    if resp.status_code != 200:
+        raise AssertionError
     print_step("booking_list_customer", resp.json())
 
     # Photographer accepts booking
@@ -119,12 +126,14 @@ def main():
         {"status": "accepted"},
         format="json",
     )
-    assert resp.status_code == 200, (resp.status_code, resp.content)
+    if resp.status_code != 200:
+        raise AssertionError(resp.status_code, resp.content)
     print_step("booking_status_update", resp.json())
 
     # Photographer completes booking
     resp = client.put(f"/api/bookings/{booking_id}/complete/")
-    assert resp.status_code == 200, (resp.status_code, resp.content)
+    if resp.status_code != 200:
+        raise AssertionError(resp.status_code, resp.content)
     print_step("booking_complete", resp.json())
 
 
