@@ -27,7 +27,8 @@ class SignupSerializer(serializers.ModelSerializer):
         model = User
         fields = ["username", "email", "password", "first_name", "last_name", "role"]
 
-    def validate_password(self, value):
+    @staticmethod
+    def validate_password(value):
         validate_password(value)
         return value
 

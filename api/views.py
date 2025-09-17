@@ -29,7 +29,8 @@ class SignupView(generics.CreateAPIView):
 
 
 class MeView(APIView):
-    def get(self, request):
+    @staticmethod
+    def get(request):
         return Response(UserSerializer(request.user).data)
 
 
@@ -63,7 +64,8 @@ class LoginView(TokenObtainPairView):
 class AuthTestView(APIView):
     permission_classes = [permissions.AllowAny]
 
-    def get(self, request):
+    @staticmethod
+    def get(request):
         if request.user.is_authenticated:
             payload = None
             try:
@@ -141,7 +143,8 @@ class PhotographerUpdateView(generics.RetrieveUpdateAPIView):
 class PhotographersTestView(APIView):
     permission_classes = [permissions.AllowAny]
 
-    def get(self, request):
+    @staticmethod
+    def get(request):
         count = PhotographerProfile.objects.filter(availableForBooking=True).count()
         return Response({"available_photographers": count})
 
@@ -190,7 +193,8 @@ class BookingMeListView(generics.ListAPIView):
 class BookingsTestView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
-    def get(self, request):
+    @staticmethod
+    def get(request):
         user = request.user
         if user.role == User.Roles.CUSTOMER:
             count = Booking.objects.filter(customer=user).count()

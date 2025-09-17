@@ -8,7 +8,8 @@ class HealthView(APIView):
     authentication_classes = []
     permission_classes = []
 
-    def get(self, request):
+    @staticmethod
+    def get(request):
         return Response(
             {"status": "ok", "timestamp": datetime.now(timezone.utc).isoformat()}
         )
