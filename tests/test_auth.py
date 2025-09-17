@@ -69,5 +69,3 @@ def test_me_with_valid_token_returns_user(client):
     user = resp.json()
     assert user["email"] == "meuser@example.com"
     assert user["role"] == "customer"
-
-

@@ -2,7 +2,6 @@ import pytest
 from django.contrib.auth import get_user_model
 from rest_framework.test import APIClient
 
-
 pytestmark = pytest.mark.django_db
 
 
@@ -96,7 +95,9 @@ def test_accept_reject_complete_notify_customer(client, users, tokens):
 
     # Photographer accepts
     client.credentials(HTTP_AUTHORIZATION=f"Bearer {tokens['photographer_access']}")
-    client.patch(f"/api/bookings/{booking['id']}/", {"status": "accepted"}, format="json")
+    client.patch(
+        f"/api/bookings/{booking['id']}/", {"status": "accepted"}, format="json"
+    )
 
     # Customer reads notifications and finds accepted
     client.credentials(HTTP_AUTHORIZATION=f"Bearer {tokens['customer_access']}")
@@ -142,5 +143,3 @@ def test_me_only_shows_own_and_mark_read(client, users, tokens):
     client.credentials(HTTP_AUTHORIZATION=f"Bearer {tokens['customer_access']}")
     r3 = client.patch(f"/api/notifications/{notif_id}/read/")
     assert r3.status_code in (404, 403)
-
-

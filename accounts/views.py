@@ -34,6 +34,16 @@ class RoleAwareTokenObtainPairSerializer(TokenObtainPairSerializer):
         data["user"] = UserSerializer(self.user).data
         return data
 
+    def create(self, validated_data):
+        raise NotImplementedError(
+            "create method is not supported for token serializers"
+        )
+
+    def update(self, instance, validated_data):
+        raise NotImplementedError(
+            "update method is not supported for token serializers"
+        )
+
 
 class RoleAwareTokenObtainPairView(TokenObtainPairView):
     serializer_class = RoleAwareTokenObtainPairSerializer

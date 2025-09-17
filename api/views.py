@@ -56,6 +56,16 @@ class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
         data["user"] = UserSerializer(self.user).data
         return data
 
+    def create(self, validated_data):
+        raise NotImplementedError(
+            "create method is not supported for token serializers"
+        )
+
+    def update(self, instance, validated_data):
+        raise NotImplementedError(
+            "update method is not supported for token serializers"
+        )
+
 
 class LoginView(TokenObtainPairView):
     serializer_class = EmailTokenObtainPairSerializer
@@ -124,9 +134,7 @@ class PhotographerUpdateView(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         if not self.request.user.is_photographer():
-            raise PermissionDenied(
-                "Only photographers can update their profile"
-            )
+            raise PermissionDenied("Only photographers can update their profile")
 
         profile, _ = PhotographerProfile.objects.get_or_create(
             user=self.request.user,
@@ -271,7 +279,7 @@ class NotificationMeListView(generics.ListAPIView):
 class NotificationMarkReadView(generics.UpdateAPIView):
     serializer_class = NotificationSerializer
     permission_classes = [permissions.IsAuthenticated]
-    lookup_field = 'id'
+    lookup_field = "id"
 
     def get_queryset(self):
         # Only allow updates to own notifications
@@ -280,5 +288,5 @@ class NotificationMarkReadView(generics.UpdateAPIView):
     def update(self, request, *args, **kwargs):
         notification = self.get_object()
         notification.is_read = True
-        notification.save(update_fields=['is_read'])
+        notification.save(update_fields=["is_read"])
         return Response(NotificationSerializer(notification).data)

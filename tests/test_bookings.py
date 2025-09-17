@@ -118,7 +118,9 @@ def test_photographer_can_accept_and_complete_booking(client, users, tokens):
 
     # Photographer accepts
     client.credentials(HTTP_AUTHORIZATION=f"Bearer {tokens['photographer_access']}")
-    r = client.patch(f"/api/bookings/{booking['id']}/", {"status": "accepted"}, format="json")
+    r = client.patch(
+        f"/api/bookings/{booking['id']}/", {"status": "accepted"}, format="json"
+    )
     assert r.status_code == 200
     assert r.json()["status"] == "accepted"
 
@@ -143,7 +145,9 @@ def test_customer_cannot_accept_or_complete(client, users, tokens):
     booking = r.json()
 
     # Customer tries to accept
-    r = client.patch(f"/api/bookings/{booking['id']}/", {"status": "accepted"}, format="json")
+    r = client.patch(
+        f"/api/bookings/{booking['id']}/", {"status": "accepted"}, format="json"
+    )
     assert r.status_code in (403, 400)
 
     # Customer tries to complete
@@ -165,5 +169,3 @@ def test_unauthorized_cannot_access_bookings(client, users):
         format="json",
     )
     assert r.status_code == 401
-
-

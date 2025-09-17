@@ -1,5 +1,5 @@
-import os
 import json
+import os
 from datetime import date, time
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "mysite.settings")
@@ -47,7 +47,9 @@ def main():
 
     # Login customer
     resp = client.post(
-        "/api/auth/login/", {"email": customer_email, "password": "Passw0rd!"}, format="json"
+        "/api/auth/login/",
+        {"email": customer_email, "password": "Passw0rd!"},
+        format="json",
     )
     if resp.status_code != 200:
         raise AssertionError(resp.status_code, resp.content)
@@ -65,7 +67,9 @@ def main():
     # Login photographer and ensure profile exists
     client.credentials()
     resp = client.post(
-        "/api/auth/login/", {"email": photographer_email, "password": "Passw0rd!"}, format="json"
+        "/api/auth/login/",
+        {"email": photographer_email, "password": "Passw0rd!"},
+        format="json",
     )
     if resp.status_code != 200:
         raise AssertionError(resp.status_code, resp.content)
@@ -93,7 +97,9 @@ def main():
     photographer = User.objects.get(email=photographer_email)
     client.credentials()
     resp = client.post(
-        "/api/auth/login/", {"email": customer_email, "password": "Passw0rd!"}, format="json"
+        "/api/auth/login/",
+        {"email": customer_email, "password": "Passw0rd!"},
+        format="json",
     )
     access = resp.json()["access"]
     client.credentials(HTTP_AUTHORIZATION=f"Bearer {access}")
@@ -139,5 +145,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-

@@ -1,4 +1,5 @@
 import os
+
 import pytest
 
 
@@ -15,7 +16,7 @@ def configure_test_env():
 def disable_whitenoise(settings):
     # Remove WhiteNoise for test client to avoid missing package errors locally
     settings.MIDDLEWARE = [
-        m for m in settings.MIDDLEWARE if m != 'whitenoise.middleware.WhiteNoiseMiddleware'
+        m
+        for m in settings.MIDDLEWARE
+        if m != "whitenoise.middleware.WhiteNoiseMiddleware"
     ]
-
-
