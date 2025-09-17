@@ -1,11 +1,11 @@
+from django.contrib.auth import get_user_model
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from django.contrib.auth import get_user_model
-from .serializers import SignupSerializer, UserSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
 
+from .serializers import SignupSerializer, UserSerializer
 
 User = get_user_model()
 
@@ -24,13 +24,13 @@ class RoleAwareTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-        token['role'] = user.role
-        token['username'] = user.username
+        token["role"] = user.role
+        token["username"] = user.username
         return token
 
     def validate(self, attrs):
         data = super().validate(attrs)
-        data['user'] = UserSerializer(self.user).data
+        data["user"] = UserSerializer(self.user).data
         return data
 
 

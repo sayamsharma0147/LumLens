@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
-from .models import PhotographerProfile, Booking
+from .models import PhotographerProfile, Booking, Notification
 
 
 User = get_user_model()
@@ -115,3 +115,10 @@ class BookingStatusUpdateSerializer(serializers.ModelSerializer):
         return value
 
 
+class NotificationSerializer(serializers.ModelSerializer):
+    booking = serializers.UUIDField(source='booking.id', allow_null=True, read_only=True)
+
+    class Meta:
+        model = Notification
+        fields = ['id', 'booking', 'message', 'is_read', 'createdAt']
+        read_only_fields = ['id', 'booking', 'message', 'createdAt']

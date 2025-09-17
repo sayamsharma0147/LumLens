@@ -8,23 +8,41 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('api', '0001_initial'),
+        ("api", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='PhotographerProfile',
+            name="PhotographerProfile",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('bio', models.TextField(blank=True)),
-                ('profile_image', models.URLField(blank=True, help_text='URL to profile image')),
-                ('availableForBooking', models.BooleanField(default=True)),
-                ('createdAt', models.DateTimeField(auto_now_add=True)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='photographer_profile', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("bio", models.TextField(blank=True)),
+                (
+                    "profile_image",
+                    models.URLField(blank=True, help_text="URL to profile image"),
+                ),
+                ("availableForBooking", models.BooleanField(default=True)),
+                ("createdAt", models.DateTimeField(auto_now_add=True)),
+                (
+                    "user",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="photographer_profile",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Photographer Profile',
-                'verbose_name_plural': 'Photographer Profiles',
+                "verbose_name": "Photographer Profile",
+                "verbose_name_plural": "Photographer Profiles",
             },
         ),
     ]

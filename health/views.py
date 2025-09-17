@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -8,7 +9,6 @@ class HealthView(APIView):
     permission_classes = []
 
     def get(self, request):
-        return Response({
-            'status': 'ok',
-            'timestamp': datetime.now(timezone.utc).isoformat()
-        })
+        return Response(
+            {"status": "ok", "timestamp": datetime.now(timezone.utc).isoformat()}
+        )
